@@ -10,7 +10,7 @@
                 :key="'row' + row"
             >
                 <div
-                    class="col"
+                    class="col d-flex align-items-stretch"
                     v-for="(bookable, column) in bookablesInRow(row)"
                 >
                     <BookableListItem
