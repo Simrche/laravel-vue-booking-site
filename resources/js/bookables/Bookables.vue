@@ -15,7 +15,7 @@
                 >
                     <BookableListItem
                         :title="bookable.title"
-                        :content="bookable.content"
+                        :content="bookable.description"
                         :price="1000"
                     ></BookableListItem>
                 </div>
@@ -57,42 +57,11 @@ export default {
     },
     created() {
         this.loading = true
-        setTimeout(() => {
-            this.bookables = [
-                {
-                    title: "Cheap Villa",
-                    content: "A very cheap Villa"
-                },
-                {
-                    title: "Cheap Villa",
-                    content: "A very cheap Villa"
-                },
-                {
-                    title: "Cheap Villa",
-                    content: "A very cheap Villa"
-                },
-                {
-                    title: "Cheap Villa",
-                    content: "A very cheap Villa"
-                },
-                {
-                    title: "Cheap Villa",
-                    content: "A very cheap Villa"
-                },
-                {
-                    title: "Cheap Villa",
-                    content: "A very cheap Villa"
-                },
-                {
-                    title: "Cheap Villa",
-                    content: "A very cheap Villa"
-                },
-            ]
+
+        const request = axios.get("/api/bookables").then(response => {
+            this.bookables = response.data
             this.loading = false
-        }, 2000)
-    },
-    mounted() {
-        console.log('mounted')
+        })
     },
 }
 </script>

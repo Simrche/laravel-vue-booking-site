@@ -5355,34 +5355,10 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.loading = true;
-    setTimeout(function () {
-      _this.bookables = [{
-        title: "Cheap Villa",
-        content: "A very cheap Villa"
-      }, {
-        title: "Cheap Villa",
-        content: "A very cheap Villa"
-      }, {
-        title: "Cheap Villa",
-        content: "A very cheap Villa"
-      }, {
-        title: "Cheap Villa",
-        content: "A very cheap Villa"
-      }, {
-        title: "Cheap Villa",
-        content: "A very cheap Villa"
-      }, {
-        title: "Cheap Villa",
-        content: "A very cheap Villa"
-      }, {
-        title: "Cheap Villa",
-        content: "A very cheap Villa"
-      }];
+    var request = axios.get("/api/bookables").then(function (response) {
+      _this.bookables = response.data;
       _this.loading = false;
-    }, 2000);
-  },
-  mounted: function mounted() {
-    console.log('mounted');
+    });
   }
 });
 
@@ -28360,7 +28336,7 @@ var render = function () {
                       _c("BookableListItem", {
                         attrs: {
                           title: bookable.title,
-                          content: bookable.content,
+                          content: bookable.description,
                           price: 1000,
                         },
                       }),
