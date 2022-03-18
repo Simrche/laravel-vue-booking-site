@@ -5308,11 +5308,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     "title": String,
-    "content": String,
-    "price": Number
+    "description": String,
+    "id": Number
   }
 });
 
@@ -5330,6 +5332,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _BookableListItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BookableListItem */ "./resources/js/bookables/BookableListItem.vue");
+//
 //
 //
 //
@@ -28314,11 +28317,22 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card w-100" }, [
-    _c("div", { staticClass: "card-body" }, [
-      _c("h5", { staticClass: "card-title" }, [_vm._v(_vm._s(_vm.title))]),
-      _vm._v(" "),
-      _c("p", { staticClass: "card-text" }, [_vm._v(_vm._s(_vm.content))]),
-    ]),
+    _c(
+      "div",
+      { staticClass: "card-body" },
+      [
+        _c(
+          "router-link",
+          { attrs: { to: { name: "bookable", params: { id: _vm.id } } } },
+          [_c("h5", { staticClass: "card-title" }, [_vm._v(_vm._s(_vm.title))])]
+        ),
+        _vm._v(" "),
+        _c("p", { staticClass: "card-text" }, [
+          _vm._v(_vm._s(_vm.description)),
+        ]),
+      ],
+      1
+    ),
   ])
 }
 var staticRenderFns = []
@@ -28359,13 +28373,21 @@ var render = function () {
                     "div",
                     { staticClass: "col d-flex align-items-stretch" },
                     [
-                      _c("BookableListItem", {
-                        attrs: {
-                          title: bookable.title,
-                          content: bookable.description,
-                          price: 1000,
-                        },
-                      }),
+                      _c(
+                        "BookableListItem",
+                        _vm._b(
+                          {
+                            attrs: {
+                              title: bookable.title,
+                              description: bookable.description,
+                              id: bookable.id,
+                            },
+                          },
+                          "BookableListItem",
+                          bookable,
+                          false
+                        )
+                      ),
                     ],
                     1
                   )

@@ -15,8 +15,9 @@
                 >
                     <BookableListItem
                         :title="bookable.title"
-                        :content="bookable.description"
-                        :price="1000"
+                        :description="bookable.description"
+                        :id="bookable.id"
+                        v-bind="bookable"
                     ></BookableListItem>
                 </div>
                 <div class="col" v-for="p in placeholdersInRow(row)" :key="'placeholder' + row + p">
