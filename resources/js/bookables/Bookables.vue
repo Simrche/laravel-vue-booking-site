@@ -17,7 +17,6 @@
                         :title="bookable.title"
                         :description="bookable.description"
                         :id="bookable.id"
-                        v-bind="bookable"
                     ></BookableListItem>
                 </div>
                 <div class="col" v-for="p in placeholdersInRow(row)" :key="'placeholder' + row + p">
@@ -60,7 +59,7 @@ export default {
         this.loading = true
 
         const request = axios.get("/api/bookables").then(response => {
-            this.bookables = response.data
+            this.bookables = response.data.data
             this.loading = false
         })
     },
