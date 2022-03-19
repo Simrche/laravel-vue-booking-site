@@ -9,6 +9,8 @@ class Booking extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['from', 'to'];
+
     public function bookings() {
         return $this->belongsTo(Bookable::class);
     }
