@@ -5320,7 +5320,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       this.buttonMessage = "Loading ...";
       this.errors = null;
-      axios.get("/api/bookables/".concat(this.$route.bookableId, "/availability?from=").concat(this.from, "&to=").concat(this.to)).then(function (response) {
+      axios.get("/api/bookables/".concat(this.bookableId, "/availability?from=").concat(this.from, "&to=").concat(this.to)).then(function (response) {
         _this.status = response.status;
       })["catch"](function (error) {
         if (422 === error.response.status) {

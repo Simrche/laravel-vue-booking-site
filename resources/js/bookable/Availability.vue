@@ -52,7 +52,7 @@ export default {
             this.buttonMessage = "Loading ..."
             this.errors = null
 
-            axios.get(`/api/bookables/${this.$route.bookableId}/availability?from=${this.from}&to=${this.to}`)
+            axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
                 .then(response => {
                     this.status = response.status
                 }).catch(error => {
