@@ -5300,6 +5300,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    bookableId: String
+  },
   data: function data() {
     return {
       from: null,
@@ -5317,7 +5320,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       this.buttonMessage = "Loading ...";
       this.errors = null;
-      axios.get("/api/bookables/".concat(this.$route.params.id, "/availability?from=").concat(this.from, "&to=").concat(this.to)).then(function (response) {
+      axios.get("/api/bookables/".concat(this.$route.bookableId, "/availability?from=").concat(this.from, "&to=").concat(this.to)).then(function (response) {
         _this.status = response.status;
       })["catch"](function (error) {
         if (422 === error.response.status) {
@@ -5442,7 +5445,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    bookableId: String
+  },
+  data: function data() {
+    return {
+      loading: false,
+      reviews: null
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.loading = true;
+    axios.get("/api/bookables/".concat(this.bookableId, "/reviews")).then(function (response) {
+      return _this.reviews = response.data.data;
+    }).then(function () {
+      return _this.loading = false;
+    });
+  }
+});
 
 /***/ }),
 
@@ -29199,12 +29227,17 @@ var render = function () {
           ]),
         ]),
         _vm._v(" "),
-        _c("ReviewList"),
+        _c("ReviewList", { attrs: { bookableId: this.$route.params.id } }),
       ],
       1
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "col-md-4 pb-4" }, [_c("Availability")], 1),
+    _c(
+      "div",
+      { staticClass: "col-md-4 pb-4" },
+      [_c("Availability", { attrs: { bookableId: this.$route.params.id } })],
+      1
+    ),
   ])
 }
 var staticRenderFns = []
@@ -29230,67 +29263,53 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticStyle: { padding: "1.25rem" } },
-    [
-      _c(
-        "h6",
-        {
-          staticClass: "text-uppercase text-secondary font-weight-bolder pt-4",
-        },
-        [_vm._v("Review List")]
-      ),
-      _vm._v(" "),
-      _vm._l(3, function (number) {
-        return _c(
+  return _c("div", { staticStyle: { padding: "1.25rem" } }, [
+    _c(
+      "h6",
+      { staticClass: "text-uppercase text-secondary font-weight-bolder pt-4" },
+      [_vm._v("Review List")]
+    ),
+    _vm._v(" "),
+    _vm.loading
+      ? _c("div", [_c("p", [_vm._v("Loading ...")])])
+      : _c(
           "div",
-          { key: number, staticClass: "border-bottom d-none d-md-block" },
-          [
-            _vm._m(0, true),
-            _vm._v(" "),
-            _vm._m(1, true),
-            _vm._v(" "),
-            _vm._m(2, true),
-          ]
-        )
-      }),
-    ],
-    2
-  )
+          _vm._l(_vm.reviews, function (review, index) {
+            return _c(
+              "div",
+              { key: index, staticClass: "border-bottom d-none d-md-block" },
+              [
+                _c("div", { staticClass: "row pt-4" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _vm._v("Simon Roche"),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-6 d-flex justify-content-end" },
+                    [_vm._v(_vm._s(review.rating))]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _vm._v(_vm._s(review.created_at)),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row pt-4 pb-4" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("p", [_vm._v(_vm._s(review.content))]),
+                  ]),
+                ]),
+              ]
+            )
+          }),
+          0
+        ),
+  ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row pt-4" }, [
-      _c("div", { staticClass: "col-md-6" }, [_vm._v("Simon Roche")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6 d-flex justify-content-end" }, [
-        _vm._v("STAR RATING"),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [_vm._v("Added 5 minutes ago")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row pt-4 pb-4" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("p", [_vm._v("Content of the review")]),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

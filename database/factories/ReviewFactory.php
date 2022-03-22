@@ -16,7 +16,7 @@ class ReviewFactory extends Factory
     {
         return [
             'id' => Str::uuid(),
-            'content' => $this->faker->sentence(5, true),
+            'content' => $this->faker->paragraph(5, true),
             'rating' => random_int(1, 5)
         ];
     }
