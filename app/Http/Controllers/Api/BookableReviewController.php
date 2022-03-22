@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Bookable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BookableReviewIndexResource;
 
 class BookableReviewController extends Controller
 {
@@ -18,7 +19,11 @@ class BookableReviewController extends Controller
     {
         $bookable = Bookable::findOrFail($id);
 
-        return $bookable->review()->latest()->get();
+        return BookableReviewIndexResource::collection(
+            $bookable->review()->latest()->get()
+        );
+
+
 
     }
 }
