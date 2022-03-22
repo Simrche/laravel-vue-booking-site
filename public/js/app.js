@@ -5452,7 +5452,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     bookableId: String
@@ -5613,13 +5612,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     halfStar: function halfStar() {
-      return 1;
+      var fraction = Math.round((this.rating - Math.floor(this.rating)) * 100);
+      return fraction > 0 && fraction < 50;
     },
     fullStars: function fullStars() {
-      return 3;
+      return Math.round(this.rating);
     },
     emptyStars: function emptyStars() {
-      return 1;
+      return 5 - Math.ceil(this.rating);
     }
   }
 });
@@ -50843,14 +50843,7 @@ var render = function () {
                   _c(
                     "div",
                     { staticClass: "col-md-6 d-flex justify-content-end" },
-                    [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(review.rating) +
-                          "\n                    "
-                      ),
-                      _c("StarRating"),
-                    ],
+                    [_c("StarRating", { attrs: { rating: review.rating } })],
                     1
                   ),
                 ]),

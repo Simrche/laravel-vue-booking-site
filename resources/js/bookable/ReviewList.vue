@@ -10,8 +10,7 @@
                 <div class="row pt-4">
                     <div class="col-md-6">Simon Roche</div>
                     <div class="col-md-6 d-flex justify-content-end">
-                        {{review.rating}}
-                        <StarRating />
+                        <StarRating :rating="review.rating"/>
                     </div>
                 </div>
                 <div class="row">
