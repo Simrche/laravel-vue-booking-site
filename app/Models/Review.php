@@ -25,4 +25,6 @@ class Review extends Model
     public function getKeyType() {
         return 'string';
     }
+
+    protected $fillable = ['id', 'content', "rating"];
 }
