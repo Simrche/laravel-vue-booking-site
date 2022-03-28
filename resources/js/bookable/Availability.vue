@@ -9,17 +9,13 @@
         <div class="form-row d-flex justify-content-between">
             <div class="form-group col-md-6">
                 <label for="from">From</label>
-                <input @keyup.enter="check" v-model="from" type="text" name="from" id="from" class="form-control form-control-sm" placeholder="Start date" :class="[{'is-invalid': this.errorFor('from')}]">
-                <div class="invalid-feedback" v-for="(error, index) in this.errorFor('from')" :key="'from' + index">
-                    {{error}}
-                </div>
+                <input @keyup.enter="check" v-model="from" type="text" name="from" id="from" class="form-control form-control-sm" placeholder="Start date" :class="[{'is-invalid': errorFor('from')}]">
+                <v-errors :errors="errorFor('from')"/>
             </div>
             <div class="form-group col-md-6">
                 <label for="to">To</label>
-                <input @keyup.enter="check" v-model="to" type="text" name="to" id="to" class="form-control form-control-sm" placeholder="End date" :class="[{'is-invalid': this.errorFor('to')}]">
-                <div class="invalid-feedback" v-for="(error, index) in this.errorFor('to')" :key="'to' + index">
-                    {{error}}
-                </div>
+                <input @keyup.enter="check" v-model="to" type="text" name="to" id="to" class="form-control form-control-sm" placeholder="End date" :class="[{'is-invalid': errorFor('to')}]">
+                <v-errors :errors="errorFor('to')"/>
             </div>
         </div>
 
