@@ -5638,6 +5638,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5651,7 +5654,8 @@ __webpack_require__.r(__webpack_exports__);
       loading: false,
       booking: null,
       error: false,
-      errors: null
+      errors: null,
+      sending: false
     };
   },
   created: function created() {
@@ -5699,6 +5703,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.errors = null;
+      this.sending = true;
       axios.post("/api/reviews", this.review).then(function (response) {})["catch"](function (err) {
         if ((0,_shared_utils_response__WEBPACK_IMPORTED_MODULE_0__.is422)(err)) {
           var errors = err.response.data.errors;
@@ -5711,8 +5716,11 @@ __webpack_require__.r(__webpack_exports__);
           _this2.error = true;
         }
       }).then(function () {
-        _this2.loading = false;
+        _this2.sending = false;
       });
+    },
+    errorFor: function errorFor(field) {
+      return this.errors !== null && this.errors[field] ? this.errors[field] : null;
     }
   }
 });
@@ -51477,54 +51485,82 @@ var render = function () {
                               1
                             ),
                             _vm._v(" "),
-                            _c("div", { staticClass: "form-group mt-2" }, [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "text-muted",
-                                  attrs: { for: "content" },
-                                },
-                                [_vm._v("Describe your experience with")]
-                              ),
-                              _vm._v(" "),
-                              _c("textarea", {
-                                directives: [
+                            _c(
+                              "div",
+                              { staticClass: "form-group mt-2" },
+                              [
+                                _c(
+                                  "label",
                                   {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.review.content,
-                                    expression: "review.content",
+                                    staticClass: "text-muted",
+                                    attrs: { for: "content" },
                                   },
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  name: "content",
-                                  id: "content",
-                                  cols: "30",
-                                  rows: "10",
-                                },
-                                domProps: { value: _vm.review.content },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.review,
-                                      "content",
-                                      $event.target.value
+                                  [_vm._v("Describe your experience with")]
+                                ),
+                                _vm._v(" "),
+                                _c("textarea", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.review.content,
+                                      expression: "review.content",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  class: [
+                                    { "is-invalid": this.errorFor("content") },
+                                  ],
+                                  attrs: {
+                                    name: "content",
+                                    id: "content",
+                                    cols: "30",
+                                    rows: "10",
+                                  },
+                                  domProps: { value: _vm.review.content },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.review,
+                                        "content",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _vm._l(
+                                  _vm.errorFor("content"),
+                                  function (error, index) {
+                                    return _c(
+                                      "div",
+                                      {
+                                        key: "content" + index,
+                                        staticClass: "invalid-feedback",
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                            " +
+                                            _vm._s(error) +
+                                            "\n                        "
+                                        ),
+                                      ]
                                     )
-                                  },
-                                },
-                              }),
-                            ]),
+                                  }
+                                ),
+                              ],
+                              2
+                            ),
                             _vm._v(" "),
                             _c(
                               "button",
                               {
                                 staticClass:
                                   "btn btn-lg btn-primary btn-block w-100 mt-2",
-                                attrs: { disabled: _vm.loading },
+                                attrs: { disabled: _vm.sending },
                                 on: {
                                   click: function ($event) {
                                     $event.preventDefault()
