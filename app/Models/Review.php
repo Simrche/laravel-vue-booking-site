@@ -9,6 +9,8 @@ class Review extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['id', 'content', "rating"];
+
     public function bookable() {
         return $this->belongsTo(Bookable::class);
     }
@@ -26,5 +28,4 @@ class Review extends Model
         return 'string';
     }
 
-    protected $fillable = ['id', 'content', "rating"];
 }

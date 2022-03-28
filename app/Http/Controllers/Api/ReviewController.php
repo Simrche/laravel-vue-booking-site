@@ -11,10 +11,10 @@ use App\Http\Resources\ReviewResource;
 class ReviewController extends Controller
 {
     public function show($id) {
-        return new ReviewResource(Review::findOrFail($id));
+        return Review::findOrFail($id);
     }
 
-    public function store($request) {
+    public function store(Request $request) {
         $data = $request->validate([
             "id" => "required|size:36|unique:reviews",
             "content" => "required|min:2",
@@ -23,7 +23,7 @@ class ReviewController extends Controller
 
         $booking = Booking::findByReviewKey($data['id']);
 
-        if(null === $booking) {
+        if($booking === null) {
             return abort(404);
         }
 

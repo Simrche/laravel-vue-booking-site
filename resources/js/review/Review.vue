@@ -34,7 +34,7 @@
                             <label for="content" class="text-muted">Describe your experience with</label>
                             <textarea v-model="review.content" name="content" id="content" cols="30" rows="10" class="form-control"></textarea>
                         </div>
-                        <button class="btn btn-lg btn-primary btn-block w-100 mt-2">Submit</button>
+                        <button class="btn btn-lg btn-primary btn-block w-100 mt-2" @click.prevent="submit" :disabled="loading">Submit</button>
                     </div>
                 </div>
             </div>
@@ -49,6 +49,7 @@ export default {
     data() {
         return {
             review: {
+                id: null,
                 rating: 5,
                 content: null,
             },
@@ -59,14 +60,17 @@ export default {
         }
     },
     created() {
+        this.review.id = this.$route.params.id
         this.loading = true
-        axios.get(`/api/reviews/${this.$route.params.id}`)
+        axios.get(`/api/reviews/${this.review.id}`)
         .then((response) => {
+            console.log(response.data.data)
             this.existingReview = response.data.data
         }).catch(err => {
             if(is404(err)) {
-                return axios.get(`/api/booking-by-review/${this.$route.params.id}`)
+                return axios.get(`/api/booking-by-review/${this.review.id}`)
                     .then((response) => {
+                        console.log("hola")
                         this.booking = response.data.data
                     }).catch((err) => {
                         // is404(err) ? {} : (this.error = true) Équivalent à en dessous
@@ -75,7 +79,7 @@ export default {
                         //     this.error = true
                         // } Équivalent à en dessous
 
-                        this.error = !is404(err)
+                        this.error = true
                     })
             }
         })
@@ -98,6 +102,17 @@ export default {
         },
         twoColumn() {
             return this.loading || !this.alreadyReviewed
+        }
+    },
+    methods: {
+        submit() {
+            console.log(this.review)
+            axios.post(`/api/reviews`, this.review).then((response) => {
+            }).catch((err) => {
+                this.error = true
+            }).then(() => {
+                this.loading = false
+            })
         }
     }
 }
