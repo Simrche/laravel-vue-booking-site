@@ -61,31 +61,48 @@ export default {
             sending: false,
         }
     },
-    created() {
+    async created() {
         this.review.id = this.$route.params.id
         this.loading = true
-        axios.get(`/api/reviews/${this.review.id}`)
-        .then((response) => {
-            this.existingReview = response.data.data
-        }).catch(err => {
+
+        try {
+            this.existingReview = (await axios.get(`/api/reviews/${this.review.id}`)).data.data
+        } catch(err) {
             if(is404(err)) {
-                return axios.get(`/api/booking-by-review/${this.review.id}`)
-                    .then((response) => {
-                        this.booking = response.data.data
-                    }).catch((err) => {
-                        // is404(err) ? {} : (this.error = true) Équivalent à en dessous
-
-                        // if(!is404(err)) {
-                        //     this.error = true
-                        // } Équivalent à en dessous
-
-                        this.error = true
-                    })
+                try {
+                    this.booking = (await axios.get(`/api/booking-by-review/${this.review.id}`)).data.data
+                } catch(err) {
+                    this.error = true
+                }
+            } else {
+                this.error = true
             }
-        })
-        .then(() => {
-            this.loading = false
-        })
+        }
+
+        this.loading = false
+
+        // axios.get(`/api/reviews/${this.review.id}`)
+        // .then((response) => {
+        //     this.existingReview = response.data.data
+        // }).catch(err => {
+        //     if(is404(err)) {
+        //         return axios.get(`/api/booking-by-review/${this.review.id}`)
+        //             .then((response) => {
+        //                 this.booking = response.data.data
+        //             }).catch((err) => {
+        //                 // is404(err) ? {} : (this.error = true) Équivalent à en dessous
+
+        //                 // if(!is404(err)) {
+        //                 //     this.error = true
+        //                 // } Équivalent à en dessous
+
+        //                 this.error = true
+        //             })
+        //     }
+        // })
+        // .then(() => {
+        //     this.loading = false
+        // })
     },
     computed: {
         alreadyReviewed() {
