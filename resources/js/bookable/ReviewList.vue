@@ -28,9 +28,7 @@
 
 <script>
 export default {
-    props: {
-        bookableId: String
-    },
+    props: ['bookableId'],
     data() {
         return {
             loading: false,

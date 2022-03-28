@@ -1,8 +1,6 @@
 <template>
     <div>
-        <div class="row" v-if="error">
-            Unknow error has occured, please try again later!
-        </div>
+        <FatalError v-if="error" />
         <div v-else class="row">
             <div :class="[{'col-md-4' : twoColumn}, {'d-none': oneColumn}]">
                 <div class="card">
@@ -43,7 +41,7 @@
 </template>
 
 <script>
-import {is404} from "./../shared/utils/response"
+import {is404, is422} from "./../shared/utils/response"
 
 export default {
     data() {
@@ -57,6 +55,7 @@ export default {
             loading: false,
             booking: null,
             error: false,
+            errors: null,
         }
     },
     created() {
@@ -64,13 +63,11 @@ export default {
         this.loading = true
         axios.get(`/api/reviews/${this.review.id}`)
         .then((response) => {
-            console.log(response.data.data)
             this.existingReview = response.data.data
         }).catch(err => {
             if(is404(err)) {
                 return axios.get(`/api/booking-by-review/${this.review.id}`)
                     .then((response) => {
-                        console.log("hola")
                         this.booking = response.data.data
                     }).catch((err) => {
                         // is404(err) ? {} : (this.error = true) Équivalent à en dessous
@@ -106,10 +103,19 @@ export default {
     },
     methods: {
         submit() {
-            console.log(this.review)
+            this.errors = null
             axios.post(`/api/reviews`, this.review).then((response) => {
             }).catch((err) => {
-                this.error = true
+                if(is422(err)) {
+                    const errors = err.response.data.errors;
+
+                    if(errors['content'] && 1 === _.size(errors)) {
+                        this.errors = errors
+                        return
+                    }
+
+                    this.error = true
+                }
             }).then(() => {
                 this.loading = false
             })
