@@ -52084,19 +52084,10 @@ var render = function () {
         _c(
           "router-link",
           {
-            staticClass: "navbar-brand mr-auto ml-4",
+            staticClass: "navbar-brand mr-auto",
             attrs: { to: { name: "home" } },
           },
           [_vm._v("Laravel Booking")]
-        ),
-        _vm._v(" "),
-        _c(
-          "router-link",
-          {
-            staticClass: "btn nav-button",
-            attrs: { to: { name: "bookable" } },
-          },
-          [_vm._v("Bookable")]
         ),
       ],
       1
