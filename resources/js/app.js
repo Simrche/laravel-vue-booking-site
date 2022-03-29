@@ -10,6 +10,7 @@ import FatalError from "./shared/components/FatalError"
 import Success from "./shared/components/Success"
 import ValidationErrors from "./shared/components/ValidationErrors"
 import Vuex from 'vuex'
+import storeDefinition from './store'
 
 window.Vue = require('vue').default;
 
@@ -25,16 +26,7 @@ Vue.component('FatalError', FatalError)
 Vue.component('Success', Success)
 Vue.component('v-errors', ValidationErrors)
 
-const store = new Vuex.Store({
-    state: {
-        count: 0
-    },
-    mutations: {
-        increment(state) {
-            state.count++
-        }
-    }
-})
+const store = new Vuex.Store(storeDefinition)
 
 const app = new Vue({
     el: '#app',
