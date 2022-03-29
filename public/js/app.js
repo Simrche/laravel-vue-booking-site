@@ -5315,8 +5315,8 @@ __webpack_require__.r(__webpack_exports__);
   props: ['bookableId'],
   data: function data() {
     return {
-      from: null,
-      to: null,
+      from: this.$store.state.lastSearch.from,
+      to: this.$store.state.lastSearch.to,
       loading: false,
       status: null,
       buttonMessage: "Check!"
@@ -5329,7 +5329,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       this.buttonMessage = "Loading ...";
       this.errors = null;
-      this.$store.commit('setLastSearch', {
+      this.$store.dispatch('setLastSearch', {
         from: this.from,
         to: this.to
       });
@@ -5926,6 +5926,9 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_8__["default"]({
   store: store,
   components: {
     "index": _Index__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  beforeCreate: function beforeCreate() {
+    this.$store.dispatch('loadStoredState');
   }
 });
 
@@ -6081,6 +6084,19 @@ __webpack_require__.r(__webpack_exports__);
     setLastSearch: function setLastSearch(state, payload) {
       state.lastSearch = payload;
       console.log(payload);
+    }
+  },
+  actions: {
+    setLastSearch: function setLastSearch(context, payload) {
+      context.commit('setLastSearch', payload);
+      localStorage.setItem('lastSearch', JSON.stringify(payload));
+    },
+    loadStoredState: function loadStoredState(context) {
+      var lastSearch = localStorage.getItem('lastSearch');
+
+      if (lastSearch) {
+        context.commit('setLastSearch', JSON.parse(lastSearch));
+      }
     }
   }
 });

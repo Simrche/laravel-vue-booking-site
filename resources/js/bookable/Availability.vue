@@ -37,8 +37,8 @@ export default {
     props: ['bookableId'],
     data() {
         return {
-            from: null,
-            to: null,
+            from: this.$store.state.lastSearch.from,
+            to: this.$store.state.lastSearch.to,
             loading: false,
             status: null,
             buttonMessage: "Check!"
@@ -50,7 +50,7 @@ export default {
             this.buttonMessage = "Loading ..."
             this.errors = null
 
-            this.$store.commit('setLastSearch', {
+            this.$store.dispatch('setLastSearch', {
                 from: this.from,
                 to: this.to
             })
