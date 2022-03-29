@@ -8,6 +8,7 @@ export default {
     mutations: {
         setLastSearch(state, payload) {
             state.lastSearch = payload
+            console.log(payload)
         }
     }
 }

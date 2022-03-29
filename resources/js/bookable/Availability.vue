@@ -50,6 +50,13 @@ export default {
             this.buttonMessage = "Loading ..."
             this.errors = null
 
+            this.$store.commit('setLastSearch', {
+                from: this.from,
+                to: this.to
+            })
+
+            console.log(this.$store)
+
             axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
                 .then(response => {
                     this.status = response.status
