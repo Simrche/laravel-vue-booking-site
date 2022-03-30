@@ -5277,8 +5277,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _shared_utils_response__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../shared/utils/response */ "./resources/js/shared/utils/response.js");
-/* harmony import */ var _shared_mixins_validationErrors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../shared/mixins/validationErrors */ "./resources/js/shared/mixins/validationErrors.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _shared_utils_response__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../shared/utils/response */ "./resources/js/shared/utils/response.js");
+/* harmony import */ var _shared_mixins_validationErrors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../shared/mixins/validationErrors */ "./resources/js/shared/mixins/validationErrors.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -5320,7 +5328,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_shared_mixins_validationErrors__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  mixins: [_shared_mixins_validationErrors__WEBPACK_IMPORTED_MODULE_2__["default"]],
   props: ['bookableId'],
   data: function data() {
     return {
@@ -5335,26 +5343,65 @@ __webpack_require__.r(__webpack_exports__);
     check: function check() {
       var _this = this;
 
-      this.loading = true;
-      this.buttonMessage = "Loading ...";
-      this.errors = null;
-      this.$store.dispatch('setLastSearch', {
-        from: this.from,
-        to: this.to
-      });
-      console.log(this.$store);
-      axios.get("/api/bookables/".concat(this.bookableId, "/availability?from=").concat(this.from, "&to=").concat(this.to)).then(function (response) {
-        _this.status = response.status;
-      })["catch"](function (error) {
-        if ((0,_shared_utils_response__WEBPACK_IMPORTED_MODULE_0__.is422)(error)) {
-          _this.errors = error.response.data.errors;
-        }
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.loading = true;
+                _this.buttonMessage = "Loading ...";
+                _this.errors = null;
 
-        _this.status = error.response.status;
-      }).then(function () {
-        _this.loading = false;
-        _this.buttonMessage = "Check!";
-      });
+                _this.$store.dispatch('setLastSearch', {
+                  from: _this.from,
+                  to: _this.to
+                });
+
+                _context.prev = 4;
+                _context.next = 7;
+                return axios.get("/api/bookables/".concat(_this.bookableId, "/availability?from=").concat(_this.from, "&to=").concat(_this.to));
+
+              case 7:
+                _this.status = _context.sent.status;
+
+                _this.$emit("availability", _this.hasAvailability);
+
+                _context.next = 16;
+                break;
+
+              case 11:
+                _context.prev = 11;
+                _context.t0 = _context["catch"](4);
+
+                if ((0,_shared_utils_response__WEBPACK_IMPORTED_MODULE_1__.is422)(_context.t0)) {
+                  _this.errors = _context.t0.response.data.errors;
+                }
+
+                _this.status = _context.t0.response.status;
+
+                _this.$emit("availability", _this.hasAvailability);
+
+              case 16:
+                _this.loading = false; // axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
+                //     .then(response => {
+                //         this.status = response.status
+                //     }).catch(error => {
+                //         if (is422(error)){
+                //             this.errors = error.response.data.errors
+                //         }
+                //         this.status = error.response.status
+                //     }).then(() => {
+                //         this.loading = false
+                //         this.buttonMessage = "Check!"
+                //     })
+
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[4, 11]]);
+      }))();
     }
   },
   computed: {
@@ -5427,6 +5474,11 @@ __webpack_require__.r(__webpack_exports__);
       _this.bookable = response.data.data;
       _this.loading = false;
     });
+  },
+  methods: {
+    checkPrice: function checkPrice(hasAvailability) {
+      console.log(hasAvailability);
+    }
   }
 });
 
@@ -52384,7 +52436,16 @@ var render = function () {
     _c(
       "div",
       { staticClass: "col-md-4 pb-4" },
-      [_c("Availability", { attrs: { bookableId: this.$route.params.id } })],
+      [
+        _c("Availability", {
+          attrs: { bookableId: this.$route.params.id },
+          on: {
+            availability: function ($event) {
+              return _vm.checkPrice($event)
+            },
+          },
+        }),
+      ],
       1
     ),
   ])
