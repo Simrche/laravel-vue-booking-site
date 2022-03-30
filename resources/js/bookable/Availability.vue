@@ -22,7 +22,14 @@
         </div>
 
         <div class="form-row mt-3">
-            <button class="btn btn-secondary btn-block col-md-12" @click="check" :disabled='loading'>{{buttonMessage}}</button>
+            <button class="btn btn-secondary btn-block col-md-12" @click="check" :disabled='loading'>
+                <span v-if="!loading">
+                    Check!
+                </span>
+                <span v-if="loading" class="flex">
+                    <i class="fas fa-circle-notch fa-spin"></i> Checking ...
+                </span>
+            </button>
         </div>
 
 
