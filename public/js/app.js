@@ -5500,6 +5500,12 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5560,7 +5566,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _this.loading = false;
     });
   },
-  computed: (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
     lastSearch: "lastSearch",
     inBasketAlready: function inBasketAlready(state) {
       var _this2 = this;
@@ -5572,6 +5578,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return state.basket.items.reduce(function (result, item) {
         return result || item.bookable.id === _this2.bookable.id;
       }, false);
+    }
+  })), {}, {
+    inBasketAlready: function inBasketAlready() {
+      if (null === this.bookable) {
+        return false;
+      }
+
+      return this.$store.getters.inBasketAlready(this.bookable.id);
     }
   }),
   methods: {
@@ -5615,14 +5629,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     addToBasket: function addToBasket() {
-      this.$store.commit("addToBasket", {
+      this.$store.dispatch("addToBasket", {
         bookable: this.bookable,
         price: this.price,
         dates: this.lastSearch
       });
     },
     removeFromBasket: function removeFromBasket() {
-      this.$store.commit("removeFromBasket", this.bookable.id);
+      this.$store.dispatch("removeFromBasket", this.bookable.id);
     }
   }
 });
@@ -6338,6 +6352,9 @@ __webpack_require__.r(__webpack_exports__);
       state.basket.items = state.basket.items.filter(function (item) {
         return item.bookable.id !== payload;
       });
+    },
+    setBasket: function setBasket(state, payload) {
+      state.basket = payload;
     }
   },
   actions: {
@@ -6351,11 +6368,36 @@ __webpack_require__.r(__webpack_exports__);
       if (lastSearch) {
         context.commit('setLastSearch', JSON.parse(lastSearch));
       }
+
+      var basket = localStorage.getItem('basket');
+
+      if (basket) {
+        context.commit('setBasket', JSON.parse(basket));
+      }
+    },
+    addToBasket: function addToBasket(_ref, payload) {
+      var commit = _ref.commit,
+          state = _ref.state;
+      commit('addToBasket', payload);
+      localStorage.setItem('basket', JSON.stringify(state.basket));
+    },
+    removeFromBasket: function removeFromBasket(_ref2, payload) {
+      var commit = _ref2.commit,
+          state = _ref2.state;
+      commit('removeFromBasket', payload);
+      localStorage.setItem('basket', JSON.stringify(state.basket));
     }
   },
   getters: {
     itemsInBasket: function itemsInBasket(state) {
       return state.basket.items.length;
+    },
+    inBasketAlready: function inBasketAlready(state) {
+      return function (id) {
+        return state.basket.items.reduce(function (result, item) {
+          return result || item.bookable.id === id;
+        }, false);
+      };
     }
   }
 });
