@@ -21,7 +21,7 @@
             </transition>
 
             <transition name="fade">
-                <button class="btn btn-outline-secondary btn-block col-md-12" v-if="price">Book now</button>
+                <button class="btn btn-outline-secondary btn-block col-md-12" v-if="price" @click="addToBasket">Book now</button>
             </transition>
 
         </div>
@@ -71,6 +71,13 @@ export default {
             } catch (error) {
                 this.price = null
             }
+        },
+        addToBasket() {
+            this.$store.commit("addToBasket", {
+                bookable: this.bookable,
+                price: this.price,
+                dates: this.lastSearch,
+            })
         }
     }
 }

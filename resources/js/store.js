@@ -3,13 +3,22 @@ export default {
         lastSearch: {
             from: null,
             to: null,
+        },
+        basket: {
+            items: []
         }
     },
     mutations: {
         setLastSearch(state, payload) {
             state.lastSearch = payload
             console.log(payload)
-        }
+        },
+        addToBasket(state, payload) {
+            state.basket.items.push(payload)
+        },
+        removeFromBasket(state, payload) {
+            state.basket.items = state.basket.items.filter(item => item.bookable.id !== payload)
+        },
     },
     actions: {
         setLastSearch(context, payload) {
@@ -21,6 +30,6 @@ export default {
             if(lastSearch) {
                 context.commit('setLastSearch', JSON.parse(lastSearch))
             }
-        }
+        },
     }
 }
