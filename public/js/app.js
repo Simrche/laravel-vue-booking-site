@@ -5363,6 +5363,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(['itemsInBasket'])), (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)({
@@ -11528,7 +11549,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nh6.badge[data-v-9d55657e] {\n    background-color: grey;\n    font-size: 100%\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nh6.badge[data-v-9d55657e] {\n    background-color: grey;\n    font-size: 100%\n}\na[data-v-9d55657e] {\n    color: black;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -52923,25 +52944,112 @@ var render = function () {
         _vm._v("\n            Checkout form\n        "),
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [
-        _c("div", { staticClass: "d-flex justify-content-between" }, [
-          _c(
-            "h6",
-            { staticClass: "text-uppercase text-secondary font-weight-bolder" },
-            [_vm._v("Your Cart")]
-          ),
+      _c(
+        "div",
+        { staticClass: "col-md-4" },
+        [
+          _c("div", { staticClass: "d-flex justify-content-between" }, [
+            _c(
+              "h6",
+              {
+                staticClass: "text-uppercase text-secondary font-weight-bolder",
+              },
+              [_vm._v("Your Cart")]
+            ),
+            _vm._v(" "),
+            _c(
+              "h6",
+              { staticClass: "badge badge-secondary text-uppercase gris" },
+              [
+                _vm.itemsInBasket
+                  ? _c("span", [_vm._v("Items " + _vm._s(_vm.itemsInBasket))])
+                  : _c("span", [_vm._v("Empty")]),
+              ]
+            ),
+          ]),
           _vm._v(" "),
-          _c(
-            "h6",
-            { staticClass: "badge badge-secondary text-uppercase gris" },
-            [
-              _vm.itemsInBasket
-                ? _c("span", [_vm._v("Items " + _vm._s(_vm.itemsInBasket))])
-                : _c("span", [_vm._v("Empty")]),
-            ]
-          ),
-        ]),
-      ]),
+          _vm._l(_vm.basket, function (item) {
+            return _c("div", { key: item.bookable.id }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "pt-2 pb-2 border-top d-flex justify-content-between",
+                },
+                [
+                  _c(
+                    "span",
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "bookable",
+                              params: { id: item.bookable.id },
+                            },
+                          },
+                        },
+                        [_vm._v(_vm._s(item.bookable.title))]
+                      ),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "font-weight-bold" }, [
+                    _vm._v("$" + _vm._s(item.price.total)),
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "pt-2 pb-2 d-flex justify-content-between" },
+                [
+                  _c("span", [
+                    _vm._v(
+                      "\n                        From " +
+                        _vm._s(item.dates.from) +
+                        "\n                    "
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v(
+                      "\n                        To " +
+                        _vm._s(item.dates.to) +
+                        "\n                    "
+                    ),
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "pt-2 pb-2 d-flex justify-content-end" },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-outline-secondary",
+                      on: {
+                        click: function ($event) {
+                          return _vm.$store.dispatch(
+                            "removeFromBasket",
+                            item.bookable.id
+                          )
+                        },
+                      },
+                    },
+                    [_c("i", { staticClass: "fas fa-trash-alt" })]
+                  ),
+                ]
+              ),
+            ])
+          }),
+        ],
+        2
+      ),
     ]),
   ])
 }
