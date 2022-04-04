@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Adress;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,10 @@ class Booking extends Model
 
     public function reviews() {
         return $this->hasOne(Review::class);
+    }
+
+    public function address() {
+        return $this->belongsTo(Adress::class);
     }
 
     public function scopeBetweenDates(Builder $query, $from, $to) {

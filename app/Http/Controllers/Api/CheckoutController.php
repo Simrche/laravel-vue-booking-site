@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Adress;
 use App\Models\Bookable;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -21,8 +23,8 @@ class CheckoutController extends Controller
             'bookings.*.bookable_id' => "required|exists:bookables,id",
             'bookings.*.from' => "required|date|after_or_equal:today",
             'bookings.*.to' => "required|date|after_or_equal:bookings.*.from",
-            'customer.first_names' => "required|min:2",
-            'customer.last_names' => "required|min:2",
+            'customer.first_name' => "required|min:2",
+            'customer.last_name' => "required|min:2",
             'customer.street' => "required|min:3",
             'customer.city' => "required|min:2",
             'customer.email' => "required|email",
@@ -41,6 +43,24 @@ class CheckoutController extends Controller
             }],
         ]));
 
-        dd($data);
+        $bookingsData = $data['bookings'];
+        $addressData = $data['customer'];
+
+        $bookings = collect($bookingsData)->map(function($bookingData) use ($addressData){
+
+            $booking = new Booking();
+            $booking->from = $bookingData['from'];
+            $booking->to = $bookingData['to'];
+            $booking->price = 200;
+            $booking->bookable_id = $bookingData['bookable_id'];
+
+            $booking->address()->associate(Adress::create($addressData));
+
+            $booking->save();
+
+            return $booking;
+        });
+
+        return $bookings;
     }
 }
