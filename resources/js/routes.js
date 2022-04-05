@@ -29,7 +29,7 @@ const routes = [
     {
         path: '/auth/login',
         component: Login,
-        name: 'basket'
+        name: 'login'
     },
 
 ]
