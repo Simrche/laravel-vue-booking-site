@@ -34,6 +34,7 @@
 <script>
 
 import validationErrors from "../shared/mixins/validationErrors"
+import { logIn } from "../shared/utils/auth"
 
 export default {
 
@@ -57,8 +58,11 @@ export default {
                     password: this.password
                 })
 
-                await axios.get('/user')
+                logIn()
+                this.$store.dispatch('loadUser')
+                this.$router.push({name: "home"})
             } catch (error) {
+                console.log('false')
                 this.errors = error.response && error.response.data.errors
             }
 
