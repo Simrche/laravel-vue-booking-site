@@ -67,7 +67,7 @@ export default {
                     const user = (await axios.get('/user')).data
                     commit("setUser", user)
                     commit('setLoggedIn', true)
-                } catch {
+                } catch(error) {
                     dispatch('logout')
                 }
             }
